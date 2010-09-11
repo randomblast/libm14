@@ -167,25 +167,11 @@ int m14_is_container(uint32_t code) {
 	static uint32_t n_codes = (sizeof(codes) / sizeof(uint32_t));
 	int32_t last = -1, i = n_codes / 2;
 
-
 	for(i = 0;i < n_codes;i++)
 		if(codes[i] == code)
 			return 1;
 	
 	return 0;
-/* THIS IS THE CLEVER VERSION:
-	while(0 < i < n_codes - 1)
-	{
-		if(last == i) return 0;
-		else last = i;
-
-		if(codes[i] == code) return 1;
-		else if(codes[i] < code) i = i >= 2 ? i / 2 : i--;
-		else if(codes[i] > code) i = i <= n_codes / 2 ? i * 2 : i++;
-	}
-
-	return 0;
-	*/
 }
 m14_results *m14_find(char *path, m14_atom *root) {
 }
