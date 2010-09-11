@@ -179,7 +179,8 @@ int m14_is_container(uint32_t code) {
 m14_results *m14_find(char *path, m14_atom *root) {
 }
 int m14_print_tree(m14_atom *a, int depth) {
-	int i, data_length = 80 - (depth * 2) - 16;
+	int cols = getenv("COLUMNS") ? atoi(getenv("COLUMNS")) : 80;
+	int i, data_length = cols - (depth * 2) - 16;
 
 	/* Clean up code */
 	uint64_t code = m14_swap_ends(a->code) << 32;
@@ -189,7 +190,7 @@ int m14_print_tree(m14_atom *a, int depth) {
 		printf("  ");
 
 	if(a->code != 0)
-		printf("[%s] %08x %s\n", (char*) &code, a->size, (char*) a->data, data_length);
+		printf("[%s] %08x %.*s\n", (char*) &code, a->size, data_length, (char*) a->data);
 
 	for(i = 0;i < a->n_children;i++)
 		m14_print_tree(a->children[i], depth + 1);
