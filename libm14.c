@@ -88,7 +88,7 @@ m14_atom *m14_atom_parse(void *data) {
 			child = m14_atom_parse(pos);
 			if(child == NULL) return NULL;
 			m14_atom_append(a, child);
-			pos += a->size;
+			pos += child->size;
 		}
 
 	// Add pointer to data
