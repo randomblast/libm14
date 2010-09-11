@@ -62,6 +62,9 @@ int m14_file_write(m14_file *f, char *path) {
 m14_atom *m14_atom_parse(void *data) {
 	m14_atom *a = malloc(sizeof(m14_atom));
 
+	a->parent = NULL;
+	a->n_children = NULL;
+
 	memcpy(&a->size, data, 4);
 	a->size = m14_swap_ends(a->size);
 
