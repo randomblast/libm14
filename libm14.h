@@ -11,7 +11,6 @@
 #include <stdint.h>
 #include <sys/mman.h>
 
-typedef enum {TRUE, FALSE} bool;
 typedef struct _m14_atom m14_atom;
 typedef struct _m14_file m14_file;
 typedef struct _m14_results m14_results;
