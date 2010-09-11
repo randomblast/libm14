@@ -37,6 +37,7 @@ m14_file *m14_file_open(char *filename) {
 	f->root = malloc(sizeof(m14_atom));
 	f->root->size = f->rl;
 	f->root->code = 0;
+	f->root->data_type = CONTAINER;
 
 	// Main read loop
 	while(pos < f->rl)
