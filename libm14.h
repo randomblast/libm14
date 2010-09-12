@@ -88,5 +88,13 @@ int m14_recurse(m14_atom*, int(*fn)(m14_atom*));	///< Call a function on a whole
 char *m14_describe_stco(m14_atom*, int len);
 char *m14_describe_hdlr(m14_atom*, int len);
 
+/* Atom readers */
+int m14_read_stco(m14_atom*);
+
+/* Atom mdata structs */
+typedef struct {
+	uint32_t n_chunks;
+	uint32_t *rel_offsets;
+} m14_mdata_stco;
 #endif // __LIB14_H
 

@@ -364,3 +364,35 @@ char *m14_describe_hdlr(m14_atom *a, int len) {
 	snprintf(ret, len, "%s", a->data + 24);
 	return ret;
 }
+
+/* Atom readers */
+int m14_read_stco(m14_atom *a) {
+	// Take offsets relative to file from a->data, find offsets relative to mdat
+
+	m14_atom *root = a->f->root;
+
+	uint32_t i, tmp;
+	static uint32_t mdat_pos = 0;
+	m14_mdata_stco *mdata = malloc(sizeof(m14_mdata_stco));
+
+	// Get mdat pos
+	for(i = 0;i < root->n_children && mdat_pos == 0;i++)
+		if(root->children[i]->code == 0x6d646174) // mdat
+			mdat_pos = (uint32_t) (root->children[i]->data - a->f->rf);
+
+	// Get number of chunks in table
+	memcpy((void*) &mdata->n_chunks, a->data + 4, sizeof(uint32_t));
+	mdata->n_chunks = m14_swap_ends(mdata->n_chunks);
+
+	// Allocate array
+	mdata->rel_offsets = malloc(4 * mdata->n_chunks);
+	
+	for(i = 0;i < mdata->n_chunks;i++)
+	{
+		memcpy((void*) &tmp, a->data + 8 + (i * 4), 4);
+		mdata->rel_offsets[i] = m14_swap_ends(tmp) - mdat_pos;
+	}
+		
+	a->mdata = (void*) mdata;
+}
+
