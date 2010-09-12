@@ -266,6 +266,27 @@ int m14_print_tree(m14_atom *a, int depth) {
 	for(i = 0;i < a->n_children;i++)
 		m14_print_tree(a->children[i], depth + 1);
 }
+int m14_print_callback(m14_atom *a, char *(*fn)(m14_atom*, void*, int), void *arg, int depth) {
+	int cols = getenv("COLUMNS") ? atoi(getenv("COLUMNS")) : 80;
+	int i, data_length = cols - (depth * 2) - 16;
+
+	/* Clean up code */
+	uint64_t code = m14_swap_ends(a->code) << 32;
+
+	int _depth = depth;
+	while(--_depth > 0)
+		printf("  ");
+
+	if(a->code != 0)
+	{
+		char *result = (char*) fn(a, arg, data_length);
+		printf("[%s] %08x %s\n", (char*) &code, a->size, result);
+		free(result);
+	}
+
+	for(i = 0;i < a->n_children;i++)
+		m14_print_callback(a->children[i], fn, arg, depth + 1);
+}
 uint32_t m14_swap_ends(uint32_t x) {
 	return	(x>>24)
 		|	((x<<8) & 0x00ff0000)
