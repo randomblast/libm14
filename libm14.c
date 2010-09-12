@@ -162,6 +162,8 @@ int m14_atom_orphan(m14_atom *a) {
 }
 char *m14_atom_describe(m14_atom *a, void *arg, int len) {
 	static struct {uint32_t code; char *(*fn)(m14_atom*, int len);} describers[] = {
+		{0x7374636f, m14_describe_stco}
+	,	{0x68646c72, m14_describe_hdlr}
 	};
 
 	char *ret;
@@ -300,4 +302,27 @@ uint32_t m14_swap_ends(uint32_t x) {
 		|	((x<<8) & 0x00ff0000)
 		|	((x>>8) & 0x0000ff00)
 		|	(x<<24);
+}
+
+/* Atom describers */
+char *m14_describe_stco(m14_atom *a, int len) {
+	char *ret = malloc(len);
+	uint32_t n_chunks, first, last;
+
+	memcpy((void*) &n_chunks, a->data + 4, sizeof(uint32_t));
+	n_chunks = m14_swap_ends(n_chunks);
+
+	memcpy((void*) &first, a->data + 8, sizeof(uint32_t));
+	first = m14_swap_ends(first);
+
+	memcpy((void*) &last, a->data + sizeof(uint32_t) * n_chunks, sizeof(uint32_t));
+	last = m14_swap_ends(last);
+
+	snprintf(ret, len, "%4d chunks from %08x to %08x", n_chunks, first, last);
+	return ret;
+}
+char *m14_describe_hdlr(m14_atom *a, int len) {
+	char *ret = malloc(len);
+	snprintf(ret, len, "%s", a->data + 24);
+	return ret;
 }

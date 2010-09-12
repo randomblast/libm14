@@ -78,5 +78,9 @@ int m14_print_tree(m14_atom*);						///< Debug an atom tree
 int m14_print_callback(m14_atom*, char *(*)(m14_atom*, void *arg, int len), void *arg, int depth);
 uint32_t m14_swap_ends(uint32_t);					///< Swap between little-endian/big-endian
 
+/* Atom describers */
+char *m14_describe_stco(m14_atom*, int len);
+char *m14_describe_hdlr(m14_atom*, int len);
+
 #endif // __LIB14_H
 
