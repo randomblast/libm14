@@ -70,6 +70,7 @@ int m14_atom_orphan(m14_atom*);					///< Remove an atom from a tree
 
 /* Helper functions */
 int m14_is_container(uint32_t code);				///< Can this fourcc contain children?
+int m14_atom_header_length(uint32_t code);			///< How many bytes for size/code/flags
 m14_results *m14_find(char *path, m14_atom *root);	///< Perform a tree search
 int m14_print_tree(m14_atom*, int depth);			///< Debug an atom tree
 uint32_t m14_swap_ends(uint32_t);					///< Swap between little-endian/big-endian

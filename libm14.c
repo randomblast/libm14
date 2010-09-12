@@ -84,7 +84,7 @@ m14_atom *m14_atom_parse(void *data) {
 		a->data_type = CONTAINER;
 
 		m14_atom *child;
-		void *pos = data + 8;
+		void *pos = data + m14_atom_header_length(a->code);
 
 		while(pos < data + a->size)
 		{
@@ -98,7 +98,7 @@ m14_atom *m14_atom_parse(void *data) {
 	} else if(a->size != 8)
 	{
 		a->data_type = READ;
-		a->data = data + 8;
+		a->data = data + m14_atom_header_length(a->code);
 	}
 
 	return a;
@@ -175,6 +175,31 @@ int m14_is_container(uint32_t code) {
 			return 1;
 	
 	return 0;
+}
+int m14_atom_header_length(uint32_t code) {
+	// SIZE CODE FLAG = 12 bytes
+	static uint32_t b12[] = {
+		0x6d657461	// meta
+	};
+
+	// SIZE CODE FLAG FLAG = 16 bytes
+	static uint32_t b16[] = {
+		0x64617461	// data
+	};
+
+	static uint32_t n_b12 = (sizeof(b12) / sizeof(uint32_t));
+	static uint32_t n_b16 = (sizeof(b16) / sizeof(uint32_t));
+	int i;
+
+	for(i = 0;i < n_b12;i++)
+		if(b12[i] == code)
+			return 12;
+
+	for(i = 0;i < n_b16;i++)
+		if(b16[i] == code)
+			return 16;
+	
+	return 8;
 }
 m14_results *m14_find(char *path, m14_atom *root) {
 }
