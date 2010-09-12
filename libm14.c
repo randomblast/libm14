@@ -38,11 +38,12 @@ m14_file *m14_file_open(char *filename) {
 	f->root->size = f->rl;
 	f->root->code = 0;
 	f->root->data_type = CONTAINER;
+	f->root->f = f;
 
 	// Main read loop
 	while(pos < f->rl)
 	{
-		cur = m14_atom_parse(f->rf + pos);
+		cur = m14_atom_parse(f->rf + pos, f);
 		if(cur == NULL)
 			return f;
 		m14_atom_append(f->root, cur);
@@ -59,9 +60,10 @@ int m14_file_write(m14_file *f, char *path) {
 }
 
 /* m14_atom functions */
-m14_atom *m14_atom_parse(void *data) {
+m14_atom *m14_atom_parse(void *data, m14_file *f) {
 	m14_atom *a = malloc(sizeof(m14_atom));
 
+	a->f = f;
 	a->parent = NULL;
 	a->n_children = NULL;
 
@@ -88,7 +90,7 @@ m14_atom *m14_atom_parse(void *data) {
 
 		while(pos < data + a->size)
 		{
-			child = m14_atom_parse(pos);
+			child = m14_atom_parse(pos, f);
 			if(child == NULL) return NULL;
 			m14_atom_append(a, child);
 			pos += child->size;
@@ -138,6 +140,9 @@ int m14_atom_append(m14_atom *dest, m14_atom *a) {
 	// Reparent atom
 	m14_atom_orphan(a);
 	a->parent = dest;
+
+	// Propagate m14_file pointer
+	a->f = dest->f;
 }
 int m14_atom_orphan(m14_atom *a) {
 	uint32_t i;

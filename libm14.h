@@ -45,6 +45,8 @@ struct _m14_atom {
 	,	CONTAINER	///< This atom has no data - it's a container
 	} data_type;
 
+	struct m14_file *f;
+
 	struct m14_atom *parent;
 
 	uint32_t n_children;
@@ -61,7 +63,7 @@ int m14_file_close(m14_file*);						///< Cleanup and close
 int m14_file_write(m14_file*, char *path);			///< Write changes out
 
 /* m14_atom functions */
-m14_atom *m14_atom_parse(void*);					///< New atom from file data
+m14_atom *m14_atom_parse(void*, m14_file*);			///< New atom from file data
 m14_atom *m14_atom_copy(m14_atom*);					///< Copy an atom. Returns an orphan.
 int m14_atom_edit(m14_atom*);						///< Prepare atom for editing
 int m14_atom_save(m14_atom*);						///< Prepare atom for writing to disk
