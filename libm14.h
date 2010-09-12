@@ -33,8 +33,9 @@ struct _m14_atom {
 	uint32_t size;
 	uint32_t code;
 
-	/// Pointer to data region
-	void *data;
+	
+	void *data;		///< Pointer to data region
+	void *mdata;	///< Metadata
 
 	/// What should we treat this atom as? Still in the readfile, or edited
 	enum
