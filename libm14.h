@@ -40,7 +40,7 @@ struct _m14_atom {
 	enum
 	{
 		READ		///< Data resides in the mmap'd readfile; it hasn't been altered
-	,	WRITE		///< Data is owned by this struct. Length is this->size - 8
+	,	WRITE		///< Data is owned by this struct. Length is this->size - m14_atom_header_length
 	,	CONTAINER	///< This atom has no data - it's a container
 	} data_type;
 
