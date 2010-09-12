@@ -80,6 +80,7 @@ int m14_print_tree(m14_atom*);						///< Debug an atom tree
 /// Debug an atom tree by callback
 int m14_print_callback(m14_atom*, char *(*)(m14_atom*, void *arg, int len), void *arg, int depth);
 uint32_t m14_swap_ends(uint32_t);					///< Swap between little-endian/big-endian
+int m14_recurse(m14_atom*, int(*fn)(m14_atom*));	///< Call a function on a whole tree
 
 /* Atom describers */
 char *m14_describe_stco(m14_atom*, int len);

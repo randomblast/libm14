@@ -308,6 +308,14 @@ uint32_t m14_swap_ends(uint32_t x) {
 		|	((x>>8) & 0x0000ff00)
 		|	(x<<24);
 }
+int m14_recurse(m14_atom *a, int(*fn)(m14_atom*)) {
+	int i;
+
+	fn(a);
+
+	for(i = 0;i < a->n_children;i++)
+		m14_recurse(a->children[i], fn);
+}
 
 /* Atom describers */
 char *m14_describe_stco(m14_atom *a, int len) {
