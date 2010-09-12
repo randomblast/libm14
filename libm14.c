@@ -160,6 +160,28 @@ int m14_atom_orphan(m14_atom *a) {
 
 	return 0;
 }
+char *m14_atom_describe(m14_atom *a, void *arg, int len) {
+	static struct {uint32_t code; char *(*fn)(m14_atom*, int len);} describers[] = {
+	};
+
+	char *ret;
+	int i;
+	
+	if(a->data_type = CONTAINER)
+	{
+		ret = malloc(10);
+		ret = strcpy(ret, "Container");
+		return ret;
+	}
+
+	for(i = 0;i < sizeof(describers) / (sizeof(uint32_t) + sizeof(void*));i++)
+		if(describers[i].code == a->code)
+			return describers[i].fn(a, len);
+
+	ret = malloc(len);
+	snprintf(ret, len, "%s", a->data);
+	return ret;
+}
 
 /* Helper functions */
 int m14_is_container(uint32_t code) {
