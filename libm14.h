@@ -73,6 +73,7 @@ int m14_atom_orphan(m14_atom*);						///< Remove an atom from a tree
 char *m14_atom_describe(m14_atom*, void*, int len);	///< Explain atom contents (for testing)
 int	m14_atom_read(m14_atom*);						///< Run atom-specific read operations
 int m14_atom_write(m14_atom*);						///< Run atom-specific write operations
+uint32_t m14_atom_size(m14_atom*);					///< Compute atom size
 
 /* Helper functions */
 int m14_is_container(uint32_t code);				///< Can this fourcc contain children?

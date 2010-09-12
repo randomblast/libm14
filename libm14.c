@@ -214,6 +214,18 @@ int m14_atom_write(m14_atom *a) {
 		if(writers[i].code == a->code)
 			return writers[i].fn(a);
 }
+uint32_t m14_atom_size(m14_atom *a) {
+	static struct {uint32_t code; uint32_t (*fn)(m14_atom*);} sizers[] = {
+	};
+
+	int i;
+
+	for(i = 0;i < sizeof(sizers) / (sizeof(uint32_t) + sizeof(void*));i++)
+		if(sizers[i].code == a->code)
+			return sizers[i].fn(a);
+
+	return a->size;
+}
 
 /* Helper functions */
 int m14_is_container(uint32_t code) {
