@@ -163,8 +163,54 @@ int m14_atom_orphan(m14_atom *a) {
 
 /* Helper functions */
 int m14_is_container(uint32_t code) {
-	/* This list must be kept in ascending order */
+	/* This list should be kept in the order of most frequent occurence */
 	static uint32_t codes[] = {
+		0x00000000	// Root atom
+	,	0x7374626c	// stbl
+	,	0x6d646961	// mdia
+	,	0x6d696e66	// minf
+	,	0x64696e66	// dinf
+	,	0x7472616b	// trak
+	,	0x65647473	// edts
+	,	0x75647461	// udta User Data
+	,	0x696c7374	// ilst iTunes Metadata
+	,	0x6d6f6f76	// moov
+	,	0x6d657461	// meta
+
+	// iTunes tags - live under /moov/udta/meta/ilst
+	,	0x61617274	// aart Album Artist
+	,	0x636f7672	// covr Album Cover
+	,	0x63707274	// cprt Copyright
+	,	0x6370696c	// cpil Compilation
+	,	0x6469736b	// disk Disk Number
+	,	0x676e7265	// gnre Genre
+	,	0x74726b6e	// trkn	Track Number
+	,	0x746d706f	// tmpo BPM
+	,	0x72746e67	// rtng Rating/Advisory
+	,	0x7374696b	// stik Type of file
+	,	0x70637374	// pcst Podcast flag
+	,	0x63617467	// catg Category
+	,	0x6b657977	// keyw Keyword
+	,	0x7075726c	// purl Podcast URL
+	,	0x65676964	// egid Episode Global Unique ID
+	,	0x64657363	// desc	Description
+	,	0x74766e6e	// tvnn TV Network Name
+	,	0x74767368	// tvsh TV Show
+	,	0x7476656e	// tven TV Episode Number
+	,	0x7476736e	// tvsn TV Season Number
+	,	0x74766573	// tves
+	,	0x70757264	// purd Purchase Date
+	,	0x70676170	// pgap Gapless Playback flag
+	,	0xa9415254	// ©ART Artist
+	,	0xa9616c62	// ©alb Album
+	,	0xa9636d74	// ©cmt Comment
+	,	0xa9646179	// ©day Year
+	,	0xa967656e	// ©gen Genre
+	,	0xa9677270	// ©grp Grouping
+	,	0xa9746f6f	// ©too Encoder
+	,	0xa96c7972	// ©lyr Lyrics
+	,	0xa96e616d	// ©nam Title
+	,	0xa9777274	// ©wrt Composer
 	};
 
 	static uint32_t n_codes = (sizeof(codes) / sizeof(uint32_t));
