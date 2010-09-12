@@ -168,7 +168,7 @@ int m14_is_container(uint32_t code) {
 	};
 
 	static uint32_t n_codes = (sizeof(codes) / sizeof(uint32_t));
-	int32_t last = -1, i = n_codes / 2;
+	int i;
 
 	for(i = 0;i < n_codes;i++)
 		if(codes[i] == code)
