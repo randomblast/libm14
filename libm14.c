@@ -203,6 +203,17 @@ int	m14_atom_read(m14_atom *a) {
 		if(readers[i].code == a->code)
 			return readers[i].fn(a);
 }
+int m14_atom_write(m14_atom *a) {
+	static struct {uint32_t code; int (*fn)(m14_atom*);} writers[] = {
+		{0x7374636f, &m14_write_stco}
+	};
+
+	int i;
+
+	for(i = 0;i < sizeof(writers) / (sizeof(uint32_t) + sizeof(void*));i++)
+		if(writers[i].code == a->code)
+			return writers[i].fn(a);
+}
 
 /* Helper functions */
 int m14_is_container(uint32_t code) {
