@@ -45,12 +45,12 @@ struct _m14_atom {
 	,	CONTAINER	///< This atom has no data - it's a container
 	} data_type;
 
-	struct m14_file *f;
+	m14_file *f;
 
 	struct m14_atom *parent;
 
 	uint32_t n_children;
-	struct m14_atom **children;
+	m14_atom **children;
 };
 struct _m14_results {
 	uint32_t size;
