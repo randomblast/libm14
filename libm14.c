@@ -421,3 +421,5 @@ int m14_write_stco(m14_atom *a) {
 			mdat_pos = (uint32_t) (root->children[i]->data - a->f->rf);
 }
 
+/* Atom sizers */
+uint32_t m14_size_stco(m14_atom *a) {return 16 + ((m14_mdata_stco*) a->mdata)->n_chunks * 4;}

@@ -95,6 +95,9 @@ int m14_read_stco(m14_atom*);
 /* Atom writers */
 int m14_write_stco(m14_atom*);
 
+/* Atom sizers */
+uint32_t m14_size_stco(m14_atom*);
+
 /* Atom mdata structs */
 typedef struct {
 	uint32_t n_chunks;
