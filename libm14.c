@@ -407,3 +407,17 @@ int m14_read_stco(m14_atom *a) {
 	a->mdata = (void*) mdata;
 }
 
+/* Atom writers */
+int m14_write_stco(m14_atom *a) {
+	// Take offsets relative to mdat from a->mdata, find offsets relative to file
+	static uint32_t mdat_pos = 0;
+	m14_atom *root = a->f->root;
+	
+	int i;
+
+	// Get mdat pos
+	for(i = 0;i < root->n_children && mdat_pos == 0;i++)
+		if(root->children[i]->code == 0x6d646174) // mdat
+			mdat_pos = (uint32_t) (root->children[i]->data - a->f->rf);
+}
+

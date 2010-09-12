@@ -92,6 +92,9 @@ char *m14_describe_hdlr(m14_atom*, int len);
 /* Atom readers */
 int m14_read_stco(m14_atom*);
 
+/* Atom writers */
+int m14_write_stco(m14_atom*);
+
 /* Atom mdata structs */
 typedef struct {
 	uint32_t n_chunks;
