@@ -271,22 +271,8 @@ int m14_atom_header_length(uint32_t code) {
 }
 m14_results *m14_find(char *path, m14_atom *root) {
 }
-int m14_print_tree(m14_atom *a, int depth) {
-	int cols = getenv("COLUMNS") ? atoi(getenv("COLUMNS")) : 80;
-	int i, data_length = cols - (depth * 2) - 16;
-
-	/* Clean up code */
-	uint64_t code = m14_swap_ends(a->code) << 32;
-
-	int _depth = depth;
-	while(--_depth > 0)
-		printf("  ");
-
-	if(a->code != 0)
-		printf("[%s] %08x %.*s\n", (char*) &code, a->size, data_length, (char*) a->data);
-
-	for(i = 0;i < a->n_children;i++)
-		m14_print_tree(a->children[i], depth + 1);
+int m14_print_tree(m14_atom *a) {
+	return m14_print_callback(a, &m14_atom_describe, NULL, 0);
 }
 int m14_print_callback(m14_atom *a, char *(*fn)(m14_atom*, void*, int), void *arg, int depth) {
 	int cols = getenv("COLUMNS") ? atoi(getenv("COLUMNS")) : 80;
