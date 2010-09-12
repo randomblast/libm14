@@ -170,8 +170,8 @@ int m14_atom_orphan(m14_atom *a) {
 }
 char *m14_atom_describe(m14_atom *a, void *arg, int len) {
 	static struct {uint32_t code; char *(*fn)(m14_atom*, int len);} describers[] = {
-		{0x7374636f, m14_describe_stco}
-	,	{0x68646c72, m14_describe_hdlr}
+		{0x7374636f, &m14_describe_stco}
+	,	{0x68646c72, &m14_describe_hdlr}
 	};
 
 	char *ret;
