@@ -345,18 +345,17 @@ int m14_recurse(m14_atom *a, int(*fn)(m14_atom*)) {
 /* Atom describers */
 char *m14_describe_stco(m14_atom *a, int len) {
 	char *ret = malloc(len);
-	uint32_t n_chunks, first, last;
 
-	memcpy((void*) &n_chunks, a->data + 4, sizeof(uint32_t));
-	n_chunks = m14_swap_ends(n_chunks);
+	uint32_t n_chunks = ((m14_mdata_stco*) a->mdata)->n_chunks;
 
-	memcpy((void*) &first, a->data + 8, sizeof(uint32_t));
-	first = m14_swap_ends(first);
-
-	memcpy((void*) &last, a->data + sizeof(uint32_t) * n_chunks, sizeof(uint32_t));
-	last = m14_swap_ends(last);
-
-	snprintf(ret, len, "%4d chunks from %08x to %08x", n_chunks, first, last);
+	snprintf(
+		ret
+	,	len
+	,	"%4d chunks from %08x to %08x"
+	,	n_chunks
+	,	((m14_mdata_stco*) a->mdata)->rel_offsets[0]
+	,	((m14_mdata_stco*) a->mdata)->rel_offsets[n_chunks - 1]
+	);
 	return ret;
 }
 char *m14_describe_hdlr(m14_atom *a, int len) {
