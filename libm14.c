@@ -167,7 +167,7 @@ char *m14_atom_describe(m14_atom *a, void *arg, int len) {
 	char *ret;
 	int i;
 	
-	if(a->data_type = CONTAINER)
+	if(a->data_type == CONTAINER)
 	{
 		ret = malloc(10);
 		ret = strcpy(ret, "Container");
