@@ -50,6 +50,9 @@ m14_file *m14_file_open(char *filename) {
 		pos += cur->size;
 	}
 	
+	// Do atom read functions
+	m14_recurse(f->root, &m14_atom_read);
+
 	return f;
 }
 int m14_file_close(m14_file *f) {
@@ -188,6 +191,17 @@ char *m14_atom_describe(m14_atom *a, void *arg, int len) {
 	ret = malloc(len);
 	snprintf(ret, len, "%s", a->data);
 	return ret;
+}
+int	m14_atom_read(m14_atom *a) {
+	static struct {uint32_t code; int (*fn)(m14_atom*);} readers[] = {
+		{0x7374636f, &m14_read_stco}
+	};
+
+	int i;
+
+	for(i = 0;i < sizeof(readers) / (sizeof(uint32_t) + sizeof(void*));i++)
+		if(readers[i].code == a->code)
+			return readers[i].fn(a);
 }
 
 /* Helper functions */
