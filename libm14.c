@@ -195,6 +195,7 @@ char *m14_atom_describe(m14_atom *a, void *arg, int len) {
 int	m14_atom_read(m14_atom *a) {
 	static struct {uint32_t code; int (*fn)(m14_atom*);} readers[] = {
 		{0x7374636f, &m14_read_stco}
+	,	{0x656c7374, &m14_read_elst}
 	};
 
 	int i;
@@ -377,6 +378,30 @@ char *m14_describe_hdlr(m14_atom *a, int len) {
 }
 
 /* Atom readers */
+int m14_read_elst(m14_atom *a) {
+	uint32_t i, tmp;
+	m14_mdata_elst *mdata = malloc(sizeof(m14_mdata_elst));
+
+	// Get number of edits in list
+	memcpy((void*) &mdata->n_edits, a->data + 4, sizeof(uint32_t));
+	mdata->n_edits = m14_swap_ends(mdata->n_edits);
+
+	mdata->edits = malloc(12 * mdata->n_edits);
+
+	for(i = 0;i < mdata->n_edits;i++)
+	{
+		memcpy((void*) &tmp, a->data + 4 + (12 * i), 4);
+		mdata->edits[i].duration = m14_swap_ends(tmp);
+
+		memcpy((void*) &tmp, a->data + 8 + (12 * i), 4);
+		mdata->edits[i].time = m14_swap_ends(tmp);
+
+		memcpy((void*) &tmp, a->data + 12 + (12 * i), 4);
+		mdata->edits[i].speed = m14_swap_ends(tmp);
+	}
+
+	a->mdata = mdata;
+}
 int m14_read_stco(m14_atom *a) {
 	// Take offsets relative to file from a->data, find offsets relative to mdat
 

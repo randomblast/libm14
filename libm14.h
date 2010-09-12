@@ -90,6 +90,7 @@ char *m14_describe_stco(m14_atom*, int len);
 char *m14_describe_hdlr(m14_atom*, int len);
 
 /* Atom readers */
+int m14_read_elst(m14_atom*);
 int m14_read_stco(m14_atom*);
 
 /* Atom writers */
@@ -99,7 +100,11 @@ int m14_write_stco(m14_atom*);
 uint32_t m14_size_stco(m14_atom*);
 
 /* Atom mdata structs */
-typedef struct {
+typedef struct { // elst
+	uint32_t n_edits;
+	struct {uint32_t duration; uint32_t time; uint32_t speed;} *edits;
+} m14_mdata_elst;
+typedef struct { // stco
 	uint32_t n_chunks;
 	uint32_t *rel_offsets;
 } m14_mdata_stco;
